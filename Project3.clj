@@ -1,0 +1,45 @@
+(defn myPasTri [row column]
+  (cond
+        (= column 1) 1
+        (= column row) 1
+        (> column row) 0
+        :else
+          (+ (myPasTri(- row 1) (- column 1))
+             (myPasTri(- row 1) column)
+          )
+  )
+)
+(defn pasTri [row column]
+    (myPasTri (+ row 1) (+ column 1))
+)
+
+(defn finish-list [list1 list2]
+ (if (empty? list1) list2 
+   (finish-list (rest list1) (cons (first list1) list2))
+ )
+)
+
+
+(defn merge-aux [list1 list2 newList]
+ (let [first1 (first list1) first2 (first list2) rest1 (rest list1) rest2 (rest list2)]
+  (cond
+    (empty? list1) (finish-list list2 newList)
+    (empty? list2) (finish-list list1 newList) 
+    (> first1 first2) (merge-aux list1 rest2 (cons first2 newList))  
+    (< first1 first2) (merge-aux rest1 list2 (cons first1 newList))
+   :else
+    (merge-aux rest1 rest2 (do (cons first1 newList) (cons first1 newList)))  
+  ) 
+ )
+)
+
+
+(defn myMerge [list1 list2]
+ (if(empty? list1) list2
+    (if(empty? list2) list1
+       (do
+        (finish-list (merge-aux list1 list2 ()) ())
+       )
+    )
+  )
+)
