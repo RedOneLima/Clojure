@@ -46,7 +46,7 @@
 
 (defn merge-sort  [x]
   (let [n (count x) [left right] (split-at (/ n 2) x)]
-    (if (== n 1) x
+    (if (= n 1) x
       (myMerge (merge-sort left) (merge-sort right))
     )
   )
