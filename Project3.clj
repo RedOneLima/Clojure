@@ -1,17 +1,32 @@
-(defn myPasTri [row column]
-  (cond
-        (= column 1) 1
-        (= column row) 1
-        (> column row) 0
-        :else
-          (+ (myPasTri(- row 1) (- column 1))
-             (myPasTri(- row 1) column)
-          )
+;===================== Pascal's Triangle ==================================
+
+
+(defn generateRow  
+  ([x] (generateRow x '(1N)))
+  ([x y] 
+   (if (= (first (rest x)) nil)
+      (cons 1N y)
+      (generateRow (rest x)(cons (+ (first x) (first (rest x))) y))     
+   )
   )
 )
-(defn pasTri [row column]
-    (myPasTri (+ row 1) (+ column 1))
+
+(defn findRow [row]
+  (if (= row 0) '(1N)
+    (generateRow (findRow (dec row)))
+  )
 )
+
+(defn myPasTri [row column]
+ (cond
+    (= row 0) 1 
+    (> column row) (println "Outside Triangle!")
+  :else
+    (nth (findRow row) column)
+ )
+)
+
+;====================== Merge / Mergesort ==============================
 
 (defn finish-list [list1 list2]
  (if (empty? list1) list2 
@@ -50,4 +65,40 @@
       (myMerge (merge-sort left) (merge-sort right))
     )
   )
+)
+
+;========================= BST/ IOT =========================================================================
+
+(defn Insert [Tree Element]
+ (cond 
+      (= Tree ())   (list Element nil nil)
+      (= Tree nil)  (list Element nil nil)
+      (<= Element (first Tree))  (list (first Tree) (Insert (first (rest Tree)) Element) (first (rest (rest Tree))))
+  :else	     
+      (list (first Tree) (first (rest Tree)) (Insert (first (rest (rest Tree))) Element))
+  )
+)
+
+	
+
+(defn mybuildbst
+   ([List] (mybuildbst '() List))  
+   ([Tree List] 
+         (if (= List ()) 
+           Tree 
+           (mybuildbst (Insert Tree (first List)) (rest List)))  
+   )
+)
+
+(defn myiot [Tree] 
+     (if (= (first (rest Tree)) nil)
+       (if (= (first (rest (rest Tree))) nil ) 
+  	 (list (first Tree)) 
+	 (concat (list (first Tree)) (myiot (first (rest (rest Tree)))))
+       )
+       (if (= (first (rest (rest Tree))) nil )
+	    (concat  (myiot (first (rest Tree))) (list (first Tree)))
+	    (concat (myiot(first (rest Tree))) (list (first Tree)) (myiot (first (rest (rest Tree)))))	  
+      )
+    )  
 )
