@@ -1,23 +1,27 @@
+; Kyle Hewitt
+; PPL Noon 
+; Spring 2017
+
 ;===================== Pascal's Triangle ==================================
 
 
 (defn generateRow  
-  ([x] (generateRow x '(1N)))
+  ([x] (generateRow x '(1)))
   ([x y] 
    (if (= (first (rest x)) nil)
-      (cons 1N y)
-      (generateRow (rest x)(cons (+ (first x) (first (rest x))) y))     
+      (cons 1 y)
+      (generateRow (rest x)(cons (+' (first x) (first (rest x))) y))     
    )
   )
 )
 
 (defn findRow [row]
-  (if (= row 0) '(1N)
+  (if (= row 0) '(1)
     (generateRow (findRow (dec row)))
   )
 )
 
-(defn myPasTri [row column]
+(defn mypastri [row column]
  (cond
     (= row 0) 1 
     (> column row) (println "Outside Triangle!")
@@ -48,26 +52,24 @@
 )
 
 
-(defn myMerge [list1 list2]
+(defn mymerge [list1 list2]
  (if(empty? list1) list2
     (if(empty? list2) list1
-       (do
         (finish-list (merge-aux list1 list2 ()) ())
-       )
     )
   )
 )
 
 
-(defn merge-sort  [x]
+(defn mymergesort  [x]
   (let [n (count x) [left right] (split-at (/ n 2) x)]
     (if (= n 1) x
-      (myMerge (merge-sort left) (merge-sort right))
+      (mymerge (merge-sort left) (merge-sort right))
     )
   )
 )
 
-;========================= BST/ IOT =========================================================================
+;========================= BST/ IOT ===============================================================
 
 (defn Insert [Tree Element]
  (cond 
